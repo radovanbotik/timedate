@@ -40,6 +40,7 @@ export function middleware(request: NextRequest) {
     const countryLanguages = Object.keys(countryInfo.languages);
     const locale = match(countryLanguages, locales, defaultLocale);
     request.nextUrl.pathname = `/${locale}${pathname}`;
+    console.log("does this run");
     //@ts-ignore
     return NextResponse.redirect(request.nextUrl).cookies.set("location", request.cookies.get("location")?.value);
   }
