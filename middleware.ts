@@ -8,7 +8,27 @@ import countries from "./app/lib/countries.json";
 const locales = ["en", "sk", "hu"];
 const defaultLocale = "en";
 
-function getLocale(request: NextRequest) {
+type TLanguage = {
+  cca: string;
+  currencies: {
+    [currency: string]: {
+      name: string;
+      symbol: string;
+    };
+  };
+  languages: {
+    [language: string]: {
+      name: string;
+      symbol: string;
+    };
+  };
+  flag: string;
+};
+
+function getLocale(request: NextRequest, locationLanguages?: string[]) {
+  if (locationLanguages) {
+    return match(locationLanguages, locales, defaultLocale);
+  }
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
@@ -21,31 +41,12 @@ export function middleware(request: NextRequest) {
   const pathnameHasLocale = locales.some(locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
   if (pathnameHasLocale) return; // if there is a LANG in URL return
 
-  //check request cookies for location
-  // const location = request.cookies.get("location");
-  //if location cookie doesnt exist add it
-  if (!request.cookies.get("location")) {
-    const { country } = geolocation(request);
-    if (!country) request.cookies.set("location", defaultLocale);
-    else {
-      console.log("set location cookie");
-      request.cookies.set("location", country);
-    }
-  }
-  //get language based on cookie
-  const countryInfo = countries.find(
-    c => c.cca2.toUpperCase() === request.cookies.get("location")?.value.toUpperCase()
-  );
-  if (countryInfo && request?.cookies?.get("location")?.value) {
-    const countryLanguages = Object.keys(countryInfo.languages);
-    const locale = match(countryLanguages, locales, defaultLocale);
-    request.nextUrl.pathname = `/${locale}${pathname}`;
-    console.log("does this run");
-    //@ts-ignore
-    return NextResponse.redirect(request.nextUrl).cookies.set("location", request.cookies.get("location")?.value);
-  }
+  const { country } = geolocation(request); // if there is not a LNG in URL get location from request
+  const countryInfo = countries.find(c => c.cca2 === country) || countries.find(c => c.cca2 === "US");
+  //@ts-ignore
+  const countryLanguages = Object.keys(countryInfo?.languages);
+  const locale = getLocale(request, countryLanguages);
 
-  const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
   // e.g. incoming request is /products
   // The new URL is now /en-US/products
