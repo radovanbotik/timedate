@@ -6,29 +6,9 @@ import countries from "./app/lib/countries.json";
 //https://github.com/vercel/next.js/blob/canary/examples/app-dir-i18n-routing/middleware.ts
 
 const locales = ["en", "sk", "hu"];
-
-//makes sure country is set to cookie 'location'
-function setLocationCookie(request: NextRequest) {
-  const { country } = geolocation(request);
-  if (country) {
-    console.log("set location cookie");
-    return request.cookies.set("location", country);
-  }
-  return;
-}
+const defaultLocale = "en";
 
 function getLocale(request: NextRequest) {
-  const defaultLocale = "en";
-
-  const location = request.cookies.get("location");
-  if (!location) {
-    setLocationCookie(request);
-  }
-  const countryInfo = countries.find(c => c.cca2.toUpperCase() === location?.value.toUpperCase());
-  if (countryInfo) {
-    const countryLanguages = Object.keys(countryInfo.languages);
-    return match(countryLanguages, locales, defaultLocale);
-  }
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
@@ -37,16 +17,33 @@ function getLocale(request: NextRequest) {
 }
 
 export function middleware(request: NextRequest) {
-  // const c = countries.find(c => c.cca2 === "AF");
-  // console.log(Object.keys(c?.languages));
-
-  // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
+  if (pathnameHasLocale) return; // if there is a LANG in URL return
 
-  if (pathnameHasLocale) return;
+  //check request cookies for location
+  // const location = request.cookies.get("location");
+  //if location cookie doesnt exist add it
+  if (!request.cookies.get("location")) {
+    const { country } = geolocation(request);
+    if (!country) request.cookies.set("location", defaultLocale);
+    else {
+      console.log("set location cookie");
+      request.cookies.set("location", country);
+    }
+  }
+  //get language based on cookie
+  const countryInfo = countries.find(
+    c => c.cca2.toUpperCase() === request.cookies.get("location")?.value.toUpperCase()
+  );
+  if (countryInfo && request?.cookies?.get("location")?.value) {
+    const countryLanguages = Object.keys(countryInfo.languages);
+    const locale = match(countryLanguages, locales, defaultLocale);
+    request.nextUrl.pathname = `/${locale}${pathname}`;
+    //@ts-ignore
+    return NextResponse.redirect(request.nextUrl).cookies.set("location", request.cookies.get("location")?.value);
+  }
 
-  // Redirect if there is no locale
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
   // e.g. incoming request is /products
