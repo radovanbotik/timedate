@@ -8,27 +8,7 @@ import countries from "./app/lib/countries.json";
 const locales = ["en", "sk", "hu"];
 const defaultLocale = "en";
 
-type TLanguage = {
-  cca: string;
-  currencies: {
-    [currency: string]: {
-      name: string;
-      symbol: string;
-    };
-  };
-  languages: {
-    [language: string]: {
-      name: string;
-      symbol: string;
-    };
-  };
-  flag: string;
-};
-
-function getLocale(request: NextRequest, locationLanguages?: string[]) {
-  if (locationLanguages) {
-    return match(locationLanguages, locales, defaultLocale);
-  }
+function getLocale(request: NextRequest) {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
@@ -42,14 +22,14 @@ export function middleware(request: NextRequest) {
   if (pathnameHasLocale) return; // if there is a LANG in URL return
 
   const { country } = geolocation(request); // if there is not a LNG in URL get location from request
-  const countryInfo = countries.find(c => c.cca2 === country) || countries.find(c => c.cca2 === "US");
-  //@ts-ignore
-  const countryLanguages = Object.keys(countryInfo?.languages);
-  const locale = getLocale(request, countryLanguages);
 
+  const countryReference = countries.find(c => c.cca2 === country);
+  if (countryReference) {
+    request.nextUrl.searchParams.set("country-code", countryReference.cca2);
+  }
+
+  const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
-  // e.g. incoming request is /products
-  // The new URL is now /en-US/products
   return NextResponse.redirect(request.nextUrl);
 }
 
