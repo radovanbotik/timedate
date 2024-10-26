@@ -5,12 +5,11 @@ import { generateTime, toLocalDate } from "../utility/timeDate";
 import { intlFormat } from "date-fns";
 
 type TDate = {
-  serverTime: Date;
   locale?: Intl.LocalesArgument;
   dateTimeFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export default function DisplayDate({ serverTime, locale, dateTimeFormatOptions }: TDate) {
+export default function DisplayDate({ locale, dateTimeFormatOptions }: TDate) {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {

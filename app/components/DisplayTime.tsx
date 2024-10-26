@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import { generateTime, toLocalTime } from "../utility/timeDate";
 
 type TTime = {
-  serverTime: Date;
   locale?: Intl.LocalesArgument;
   dateTimeFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export default function DisplayTime({ serverTime, locale, dateTimeFormatOptions }: TTime) {
+export default function DisplayTime({ locale, dateTimeFormatOptions }: TTime) {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {

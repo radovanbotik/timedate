@@ -52,8 +52,8 @@ export default async function Page(props: { params: { lang: string }; searchPara
           ></Image>
         )}
       </div>
-      <DisplayTime serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={timeOptions} />
-      <DisplayDate serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={dateOptions} />
+      <DisplayTime locale={BCP47} dateTimeFormatOptions={timeOptions} />
+      <DisplayDate locale={BCP47} dateTimeFormatOptions={dateOptions} />
     </div>
   );
 }
