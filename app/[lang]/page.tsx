@@ -18,7 +18,7 @@ export default async function Page(props: { params: { lang: string }; searchPara
 
   const dictionary = await getDictionary(lang);
 
-  const BCP47 = getBCP47CountryCode(country);
+  const BCP47 = getBCP47CountryCode(lang);
 
   const dateOptions: Intl.DateTimeFormatOptions = {
     weekday: "long",
