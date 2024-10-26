@@ -1,19 +1,24 @@
 import Image from "next/image";
+import clm from "country-locale-map";
 import { DisplayDate } from "../components/DisplayDate";
 import { DisplayTime } from "../components/DisplayTime";
 import { getDictionary } from "../utility/getDictionary";
+import { basicFilter } from "bcp-47-match";
 import countries from "../lib/countries.json";
+
+function getBCP47CountryCode(country: string) {
+  return clm.getLocaleByAlpha2(country.toUpperCase())?.replace("_", "-");
+}
 
 export default async function Page(props: { params: { lang: string }; searchParams: { country?: string } }) {
   const lang = props.params.lang;
-  const country = props.searchParams.country;
-
+  const country = props.searchParams.country || "us";
   const countryReference = countries.find(c => c.cca2.toLowerCase() === country?.toLowerCase());
 
   const dictionary = await getDictionary(lang);
   const serverTime = new Date();
 
-  // console.log(`https://flagcdn.com/96x72/${countryReference.cca2}.png`)
+  const BCP47 = getBCP47CountryCode(country);
 
   const dateOptions: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -43,8 +48,8 @@ export default async function Page(props: { params: { lang: string }; searchPara
             ></Image>
           )}
         </div>
-        <DisplayTime serverTime={serverTime} locale={lang} dateTimeFormatOptions={timeOptions} />
-        <DisplayDate serverTime={serverTime} locale={lang} dateTimeFormatOptions={dateOptions} />
+        <DisplayTime serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={timeOptions} />
+        <DisplayDate serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={dateOptions} />
       </div>
     </div>
   );

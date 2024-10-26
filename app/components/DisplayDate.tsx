@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { generateTime, toLocalDate } from "../utility/timeDate";
+import { intlFormat } from "date-fns";
 
 type TDate = {
   serverTime: Date;
@@ -23,8 +24,10 @@ export function DisplayDate({ serverTime, locale, dateTimeFormatOptions }: TDate
   }, []);
 
   return (
-    <time dateTime={date.toDateString()} className="tabular-nums text-3xl">
-      {toLocalDate(date, locale, dateTimeFormatOptions)}
-    </time>
+    <>
+      <time className="tabular-nums text-3xl" suppressHydrationWarning>
+        {toLocalDate(date, locale, dateTimeFormatOptions)}
+      </time>
+    </>
   );
 }

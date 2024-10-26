@@ -11,7 +11,10 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.5",
     "@vercel/functions": "^1.4.2",
+    "bcp-47-match": "^2.0.3",
     "clsx": "^2.1.1",
+    "country-locale-map": "^1.9.8",
+    "date-fns": "^4.1.0",
     "negotiator": "^1.0.0",
     "next": "14.2.15",
     "react": "^18.3.1",

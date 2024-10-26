@@ -8,9 +8,8 @@ type TTime = {
   dateTimeFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export function DisplayTime({ serverTime, locale, dateTimeFormatOptions }: TTime) {
+export function DisplayTime({ serverTime, locale }: TTime) {
   const [time, setTime] = useState(serverTime);
-
   useEffect(() => {
     const interval = setInterval(() => {
       const newTime = generateTime();
@@ -22,8 +21,8 @@ export function DisplayTime({ serverTime, locale, dateTimeFormatOptions }: TTime
   }, []);
 
   return (
-    <time dateTime={time.toDateString()} className="tabular-nums text-7xl">
-      {toLocalTime(time, locale, dateTimeFormatOptions)}
+    <time dateTime={toLocalTime(time, locale)} className="tabular-nums text-7xl">
+      {toLocalTime(time, locale)}
     </time>
   );
 }
