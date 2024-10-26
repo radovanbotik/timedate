@@ -22,7 +22,10 @@ export default function DisplayTime({ locale, dateTimeFormatOptions }: TTime) {
 
   const localizedTime = toLocalTime(time, locale, dateTimeFormatOptions);
   return (
-    <time dateTime={toLocalTime(time, locale, dateTimeFormatOptions)} className="tabular-nums text-7xl">
+    <time
+      dateTime={toLocalTime(time, locale, dateTimeFormatOptions)}
+      className="tabular-nums text-5xl lg:text-7xl text-center"
+    >
       {localizedTime}
     </time>
   );

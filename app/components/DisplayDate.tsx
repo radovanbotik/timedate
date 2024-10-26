@@ -26,7 +26,7 @@ export default function DisplayDate({ locale, dateTimeFormatOptions }: TDate) {
 
   return (
     <>
-      <time className="tabular-nums text-3xl">{localizedDate}</time>
+      <time className="tabular-nums text-2xl lg:text-3xl text-center">{localizedDate}</time>
     </>
   );
 }
