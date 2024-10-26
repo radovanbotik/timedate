@@ -23,9 +23,8 @@ export function middleware(request: NextRequest) {
 
   const { country } = geolocation(request); // if there is not a LNG in URL get location from request
 
-  const countryReference = countries.find(c => c.cca2 === country);
-  if (countryReference) {
-    request.nextUrl.searchParams.set("country-code", countryReference.cca2);
+  if (country) {
+    request.nextUrl.searchParams.set("country", country);
   }
 
   const locale = getLocale(request);

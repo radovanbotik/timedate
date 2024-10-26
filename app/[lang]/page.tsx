@@ -2,12 +2,18 @@ import Image from "next/image";
 import { DisplayDate } from "../components/DisplayDate";
 import { DisplayTime } from "../components/DisplayTime";
 import { getDictionary } from "../utility/getDictionary";
-import { cookies } from "next/headers";
-export default async function Page(props: { params: { lang: string } }) {
-  // const CCA2 = cookies().get("country")?.value.toLowerCase();
+import countries from "../lib/countries.json";
+
+export default async function Page(props: { params: { lang: string }; searchParams: { country?: string } }) {
   const lang = props.params.lang;
+  const country = props.searchParams.country;
+
+  const countryReference = countries.find(c => c.cca2.toLowerCase() === country?.toLowerCase());
+
   const dictionary = await getDictionary(lang);
   const serverTime = new Date();
+
+  // console.log(`https://flagcdn.com/96x72/${countryReference.cca2}.png`)
 
   const dateOptions: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -27,7 +33,15 @@ export default async function Page(props: { params: { lang: string } }) {
         <div className="text-center">
           <p>{dictionary.home.header}</p>
           <p>{dictionary.home.subheader}</p>
-          {/* <Image src={`https://flagcdn.com/96x72/${CCA2}.png`} alt={lang} width={32} height={32}></Image> */}
+          {countryReference && (
+            <Image
+              src={`https://flagcdn.com/96x72/${countryReference.cca2.toLowerCase()}.png`}
+              alt={`flag of ${country}`}
+              width={96}
+              height={72}
+              className="w-12 h-9"
+            ></Image>
+          )}
         </div>
         <DisplayTime serverTime={serverTime} locale={lang} dateTimeFormatOptions={timeOptions} />
         <DisplayDate serverTime={serverTime} locale={lang} dateTimeFormatOptions={dateOptions} />
