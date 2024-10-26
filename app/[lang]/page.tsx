@@ -21,11 +21,11 @@ export default async function Page(props: { params: { lang: string }; searchPara
   const BCP47 = getBCP47CountryCode(country);
 
   const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: "long",
+    // weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
-    timeZone: "Europe/Bucharest",
+    // timeZone: "Europe/Bucharest",
   };
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric",
@@ -35,24 +35,22 @@ export default async function Page(props: { params: { lang: string }; searchPara
   };
 
   return (
-    <div>
-      <div className="h-dvh flex flex-col items-center justify-center gap-5">
-        <div className="text-center">
-          <p className="text-center">{dictionary.home.header}</p>
-          <p className="text-center">{dictionary.home.subheader}</p>
-          {countryReference && (
-            <Image
-              src={`https://flagcdn.com/96x72/${countryReference.cca2.toLowerCase()}.png`}
-              alt={`flag of ${country}`}
-              width={96}
-              height={72}
-              className="w-12 h-9"
-            ></Image>
-          )}
-        </div>
-        <DisplayTime serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={timeOptions} />
-        <DisplayDate serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={dateOptions} />
+    <div className="h-dvh flex flex-col items-center justify-center gap-5">
+      <div className="text-center">
+        <p className="text-center">{dictionary.home.header}</p>
+        <p className="text-center">{dictionary.home.subheader}</p>
+        {countryReference && (
+          <Image
+            src={`https://flagcdn.com/96x72/${countryReference.cca2.toLowerCase()}.png`}
+            alt={`flag of ${country}`}
+            width={96}
+            height={72}
+            className="w-12 h-9"
+          ></Image>
+        )}
       </div>
+      <DisplayTime serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={timeOptions} />
+      <DisplayDate serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={dateOptions} />
     </div>
   );
 }
