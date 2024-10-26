@@ -11,7 +11,7 @@ type TDate = {
 };
 
 export default function DisplayDate({ serverTime, locale, dateTimeFormatOptions }: TDate) {
-  const [date, setDate] = useState(serverTime);
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -9,7 +9,7 @@ type TTime = {
 };
 
 export default function DisplayTime({ serverTime, locale, dateTimeFormatOptions }: TTime) {
-  const [time, setTime] = useState(serverTime);
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     const interval = setInterval(() => {
