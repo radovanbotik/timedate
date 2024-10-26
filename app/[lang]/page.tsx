@@ -36,8 +36,8 @@ export default async function Page(props: { params: { lang: string }; searchPara
     <div>
       <div className="h-dvh flex flex-col items-center justify-center gap-5">
         <div className="text-center">
-          <p>{dictionary.home.header}</p>
-          <p>{dictionary.home.subheader}</p>
+          <p className="text-center">{dictionary.home.header}</p>
+          <p className="text-center">{dictionary.home.subheader}</p>
           {countryReference && (
             <Image
               src={`https://flagcdn.com/96x72/${countryReference.cca2.toLowerCase()}.png`}
