@@ -28,8 +28,9 @@ export default async function Page(props: { params: { lang: string }; searchPara
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
-    timeZone: "Europe/Bucharest",
   };
+
+  console.log(new Date().toLocaleTimeString());
 
   const DisplayTime = dynamic(() => import("../components/DisplayTime"), { ssr: false });
   const DisplayDate = dynamic(() => import("../components/DisplayDate"), { ssr: false });
