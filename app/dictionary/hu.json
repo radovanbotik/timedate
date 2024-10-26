@@ -1,6 +1,7 @@
 {
   "home": {
-    "header": "üdvözlöm",
-    "subheader": "Aktuális idő"
+    "greeting": "Üdvözlöm",
+    "location": "Az Ön jelenlegi tartózkodási helye:",
+    "currentTime": "Aktuális idő"
   }
 }

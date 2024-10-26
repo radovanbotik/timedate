@@ -1,6 +1,7 @@
 {
   "home": {
-    "header": "Welcome",
-    "subheader": "Current time"
+    "greeting": "Welcome",
+    "location": "Your Current Location is:",
+    "currentTime": "Current time"
   }
 }

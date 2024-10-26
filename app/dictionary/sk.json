@@ -1,6 +1,7 @@
 {
   "home": {
-    "header": "Vitajte",
-    "subheader": "Aktuálny čas"
+    "greeting": "Vitajte",
+    "location": "Nachádzate sa v:",
+    "currentTime": "Aktuálny čas"
   }
 }

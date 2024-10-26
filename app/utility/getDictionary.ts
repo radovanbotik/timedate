@@ -2,8 +2,9 @@ import "server-only";
 
 type TMap = {
   home: {
-    header: string;
-    subheader: string;
+    greeting: string;
+    location: string;
+    currentTime: string;
   };
 };
 
