@@ -25,11 +25,13 @@ export default async function Page(props: { params: { lang: string }; searchPara
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "Europe/Bucharest",
   };
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
+    timeZone: "Europe/Bucharest",
   };
 
   return (

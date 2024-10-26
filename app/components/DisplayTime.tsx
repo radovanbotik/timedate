@@ -19,10 +19,6 @@ export function DisplayTime({ serverTime, locale }: TTime) {
       clearInterval(interval);
     };
   }, []);
-
-  return (
-    <time dateTime={toLocalTime(time, locale)} className="tabular-nums text-7xl">
-      {toLocalTime(time, locale)}
-    </time>
-  );
+  const localizedTime = toLocalTime(time, locale);
+  return <time className="tabular-nums text-7xl">{localizedTime}</time>;
 }

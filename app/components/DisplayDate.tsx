@@ -23,11 +23,11 @@ export function DisplayDate({ serverTime, locale, dateTimeFormatOptions }: TDate
     };
   }, []);
 
+  const localizedDate = toLocalDate(date, locale, dateTimeFormatOptions);
+
   return (
     <>
-      <time className="tabular-nums text-3xl" suppressHydrationWarning>
-        {toLocalDate(date, locale, dateTimeFormatOptions)}
-      </time>
+      <time className="tabular-nums text-3xl">{localizedDate}</time>
     </>
   );
 }
