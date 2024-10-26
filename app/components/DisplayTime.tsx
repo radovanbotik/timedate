@@ -9,7 +9,7 @@ type TTime = {
 };
 
 export function DisplayTime({ serverTime, locale }: TTime) {
-  const [time, setTime] = useState(serverTime);
+  const [time, setTime] = useState(new Date());
   useEffect(() => {
     const interval = setInterval(() => {
       const newTime = generateTime();
@@ -20,5 +20,9 @@ export function DisplayTime({ serverTime, locale }: TTime) {
     };
   }, []);
   const localizedTime = toLocalTime(time, locale);
-  return <time className="tabular-nums text-7xl">{localizedTime}</time>;
+  return (
+    <time className="tabular-nums text-7xl" suppressHydrationWarning>
+      {localizedTime}
+    </time>
+  );
 }
