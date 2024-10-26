@@ -1,7 +1,5 @@
 import Image from "next/image";
 import clm from "country-locale-map";
-import DisplayDate from "../components/DisplayDate";
-import DisplayTime from "../components/DisplayTime";
 import { getDictionary } from "../utility/getDictionary";
 import countries from "../lib/countries.json";
 import dynamic from "next/dynamic";
@@ -33,8 +31,8 @@ export default async function Page(props: { params: { lang: string }; searchPara
     timeZone: "Europe/Bucharest",
   };
 
-  // const DisplayTime = dynamic(() => import("../components/DisplayTime"), { ssr: false });
-  // const DisplayDate = dynamic(() => import("../components/DisplayDate"), { ssr: false });
+  const DisplayTime = dynamic(() => import("../components/DisplayTime"), { ssr: false });
+  const DisplayDate = dynamic(() => import("../components/DisplayDate"), { ssr: false });
 
   return (
     <div className="h-dvh flex flex-col items-center justify-center gap-5">

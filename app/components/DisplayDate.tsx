@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { generateTime, toLocalDate } from "../utility/timeDate";
-import { intlFormat } from "date-fns";
 
 type TDate = {
   locale?: Intl.LocalesArgument;
