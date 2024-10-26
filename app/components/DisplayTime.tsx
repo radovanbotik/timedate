@@ -8,28 +8,23 @@ type TTime = {
   dateTimeFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export function DisplayTime({ serverTime, locale }: TTime) {
-  const [time, setTime] = useState(new Date());
-  const [isInit, setIsInit] = useState(false);
+export default function DisplayTime({ serverTime, locale, dateTimeFormatOptions }: TTime) {
+  const [time, setTime] = useState(serverTime);
+
   useEffect(() => {
-    if (window !== undefined) setIsInit(true);
     const interval = setInterval(() => {
       const newTime = generateTime();
       setTime(newTime);
     }, 1000);
     return function cleanUp() {
       clearInterval(interval);
-      setIsInit(false);
     };
   }, []);
-  const localizedTime = toLocalTime(time, locale);
+
+  const localizedTime = toLocalTime(time, locale, dateTimeFormatOptions);
   return (
-    <>
-      {isInit && (
-        <time className="tabular-nums text-7xl" suppressHydrationWarning>
-          {localizedTime}
-        </time>
-      )}
-    </>
+    <time dateTime={toLocalTime(time, locale, dateTimeFormatOptions)} className="tabular-nums text-7xl">
+      {localizedTime}
+    </time>
   );
 }

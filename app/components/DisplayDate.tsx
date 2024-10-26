@@ -10,7 +10,7 @@ type TDate = {
   dateTimeFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export function DisplayDate({ serverTime, locale, dateTimeFormatOptions }: TDate) {
+export default function DisplayDate({ serverTime, locale, dateTimeFormatOptions }: TDate) {
   const [date, setDate] = useState(serverTime);
 
   useEffect(() => {

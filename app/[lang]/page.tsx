@@ -1,10 +1,11 @@
 import Image from "next/image";
 import clm from "country-locale-map";
-import { DisplayDate } from "../components/DisplayDate";
-import { DisplayTime } from "../components/DisplayTime";
+// import { DisplayDate } from "../components/DisplayDate";
+// import { DisplayTime } from "../components/DisplayTime";
 import { getDictionary } from "../utility/getDictionary";
 import { basicFilter } from "bcp-47-match";
 import countries from "../lib/countries.json";
+import dynamic from "next/dynamic";
 
 function getBCP47CountryCode(country: string) {
   return clm.getLocaleByAlpha2(country.toUpperCase())?.replace("_", "-");
@@ -21,11 +22,10 @@ export default async function Page(props: { params: { lang: string }; searchPara
   const BCP47 = getBCP47CountryCode(country);
 
   const dateOptions: Intl.DateTimeFormatOptions = {
-    // weekday: "long",
+    weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
-    // timeZone: "Europe/Bucharest",
   };
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric",
@@ -33,6 +33,9 @@ export default async function Page(props: { params: { lang: string }; searchPara
     second: "numeric",
     timeZone: "Europe/Bucharest",
   };
+
+  const DisplayTime = dynamic(() => import("../components/DisplayTime"), { ssr: false });
+  const DisplayDate = dynamic(() => import("../components/DisplayDate"), { ssr: false });
 
   return (
     <div className="h-dvh flex flex-col items-center justify-center gap-5">
@@ -50,7 +53,7 @@ export default async function Page(props: { params: { lang: string }; searchPara
         )}
       </div>
       <DisplayTime serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={timeOptions} />
-      {/* <DisplayDate serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={dateOptions} /> */}
+      <DisplayDate serverTime={serverTime} locale={BCP47} dateTimeFormatOptions={dateOptions} />
     </div>
   );
 }
